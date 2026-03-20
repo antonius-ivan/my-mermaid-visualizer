@@ -392,6 +392,26 @@ input[type="color"] {
   margin-bottom: 8px;
 }
 
+.site-footer {
+  padding: 8px 8px 4px;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.6;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
 .controls-layout {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
