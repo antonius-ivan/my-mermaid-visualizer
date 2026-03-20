@@ -146,6 +146,10 @@ const elements = {
   saveHistoryBtn: document.getElementById("save-history-btn"),
   clearHistoryBtn: document.getElementById("clear-history-btn"),
   resetDemoBtn: document.getElementById("reset-demo-btn"),
+  openSettingsBtn: document.getElementById("open-settings-btn"),
+  closeSettingsBtn: document.getElementById("close-settings-btn"),
+  settingsBackdrop: document.getElementById("settings-backdrop"),
+  settingsDrawer: document.getElementById("settings-drawer"),
   diagramNameInput: document.getElementById("diagram-name-input"),
   saveDiagramBtn: document.getElementById("save-diagram-btn"),
   savedDiagramsList: document.getElementById("saved-diagrams-list"),
@@ -433,6 +437,12 @@ function renderSavedDiagrams() {
 function setStatus(message, kind = "idle") {
   elements.status.textContent = message;
   elements.status.className = `status ${kind === "idle" ? "" : kind}`.trim();
+}
+
+function setSettingsDrawerOpen(isOpen) {
+  elements.settingsDrawer.hidden = !isOpen;
+  elements.settingsBackdrop.hidden = !isOpen;
+  document.body.style.overflow = isOpen ? "hidden" : "";
 }
 
 function textColorFor(hex) {
@@ -781,6 +791,18 @@ function wireEvents() {
     setStatus("Reset to the default Mermaid demo.", "success");
   });
 
+  elements.openSettingsBtn.addEventListener("click", () => {
+    setSettingsDrawerOpen(true);
+  });
+
+  elements.closeSettingsBtn.addEventListener("click", () => {
+    setSettingsDrawerOpen(false);
+  });
+
+  elements.settingsBackdrop.addEventListener("click", () => {
+    setSettingsDrawerOpen(false);
+  });
+
   elements.saveDiagramBtn.addEventListener("click", () => {
     saveNamedDiagram();
   });
@@ -809,6 +831,12 @@ function wireEvents() {
   elements.downloadJpgBtn.addEventListener("click", () => {
     void exportRaster("jpeg").catch((error) => setStatus(error instanceof Error ? error.message : String(error), "error"));
   });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !elements.settingsDrawer.hidden) {
+      setSettingsDrawerOpen(false);
+    }
+  });
 }
 
 function initialize() {
@@ -818,6 +846,7 @@ function initialize() {
   renderHistorySelect();
   renderSavedDiagrams();
   updateThemeControls();
+  setSettingsDrawerOpen(false);
   wireEvents();
   elements.input.value = state.source;
 

@@ -36,6 +36,7 @@
         </div>
 
         <div class="hero-actions">
+          <button class="button secondary compact-button" id="open-settings-btn" type="button">⚙ Settings</button>
           <button class="button secondary compact-button" id="reset-demo-btn" type="button">Reset demo</button>
           <button class="button secondary compact-button" id="copy-source-btn" type="button">Copy source</button>
           <button class="button secondary compact-button" id="download-svg-btn" type="button">SVG</button>
@@ -51,20 +52,35 @@
               <h2>Diagram source</h2>
               <p>Edit Mermaid text and watch the preview update automatically.</p>
             </div>
-            <div class="history-tools">
+          </div>
+
+          <div class="management-bar">
+            <label class="field management-name-field">
+              <span>Current diagram name</span>
+              <input
+                id="diagram-name-input"
+                type="text"
+                maxlength="60"
+                placeholder="Architecture overview"
+              />
+            </label>
+
+            <div class="management-actions">
+              <button class="button primary compact-button" id="save-diagram-btn" type="button">
+                Save named diagram
+              </button>
+
               <label class="field compact">
                 <span>Recent diagrams</span>
                 <select id="history-select"></select>
               </label>
 
-              <div class="history-actions">
-                <button class="button secondary compact-button" id="save-history-btn" type="button">Save snapshot</button>
-                <button class="button secondary compact-button" id="clear-history-btn" type="button">Clear history</button>
-              </div>
-
-              <p class="history-meta" id="history-meta"></p>
+              <button class="button secondary compact-button" id="save-history-btn" type="button">Save snapshot</button>
+              <button class="button secondary compact-button" id="clear-history-btn" type="button">Clear history</button>
             </div>
           </div>
+
+          <p class="history-meta management-meta" id="history-meta"></p>
 
           <label class="field">
             <span>Mermaid code</span>
@@ -92,88 +108,75 @@
       <section class="panel controls-panel">
         <div class="panel-header">
           <div>
-            <h2>Styles and saved diagrams</h2>
-            <p>Pick a visual direction quickly, fine-tune it, and keep named diagrams you want to revisit.</p>
+            <h2>Saved diagrams library</h2>
+            <p>Keep named diagrams you want to revisit, reload, or clean up later.</p>
           </div>
         </div>
 
-        <div class="controls-layout">
-          <section class="control-card">
-            <div class="control-card-header">
-              <div>
-                <h3>Theme presets</h3>
-                <p>Start from a visual mood, then fine-tune the details.</p>
-              </div>
-            </div>
-
-            <div class="theme-preset-grid" id="theme-preset-grid"></div>
-          </section>
-
-          <section class="control-card">
-            <div class="control-card-header">
-              <div>
-                <h3>Manual style controls</h3>
-                <p>Control Mermaid theme mode, color palette, and typography.</p>
-              </div>
-            </div>
-
-            <div class="controls-grid">
-              <label class="field">
-                <span>Theme</span>
-                <select id="theme-select">
-                  <option value="base">Base</option>
-                  <option value="default">Default</option>
-                  <option value="neutral">Neutral</option>
-                  <option value="dark">Dark</option>
-                  <option value="forest">Forest</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Primary color</span>
-                <input id="primary-color" type="color" value="#2563eb" />
-              </label>
-
-              <label class="field">
-                <span>Background</span>
-                <input id="background-color" type="color" value="#0b1120" />
-              </label>
-
-              <label class="field">
-                <span>Font size</span>
-                <input id="font-size" type="range" min="12" max="24" value="16" />
-              </label>
-            </div>
-          </section>
-
-          <section class="control-card save-library-card">
-            <div class="control-card-header">
-              <div>
-                <h3>Saved diagrams</h3>
-                <p>Give a diagram a real name so you can load or replace it later.</p>
-              </div>
-            </div>
-
-            <div class="save-library-form">
-              <label class="field">
-                <span>Diagram name</span>
-                <input
-                  id="diagram-name-input"
-                  type="text"
-                  maxlength="60"
-                  placeholder="Architecture overview"
-                />
-              </label>
-
-              <button class="button primary compact-button" id="save-diagram-btn" type="button">
-                Save named diagram
-              </button>
-            </div>
-
-            <div class="saved-diagrams-list" id="saved-diagrams-list" aria-live="polite"></div>
-          </section>
-        </div>
+        <div class="saved-diagrams-list" id="saved-diagrams-list" aria-live="polite"></div>
       </section>
+
+      <div class="settings-backdrop" id="settings-backdrop" hidden></div>
+
+      <aside class="settings-drawer" id="settings-drawer" hidden aria-labelledby="settings-title">
+        <div class="settings-drawer-header">
+          <div>
+            <p class="eyebrow">Settings</p>
+            <h2 id="settings-title">Theme and design</h2>
+            <p class="settings-copy">Adjust the visual style without scrolling to the bottom.</p>
+          </div>
+
+          <button class="button secondary compact-button" id="close-settings-btn" type="button">Close</button>
+        </div>
+
+        <section class="control-card">
+          <div class="control-card-header">
+            <div>
+              <h3>Theme presets</h3>
+              <p>Start from a visual mood, then fine-tune the details.</p>
+            </div>
+          </div>
+
+          <div class="theme-preset-grid" id="theme-preset-grid"></div>
+        </section>
+
+        <section class="control-card">
+          <div class="control-card-header">
+            <div>
+              <h3>Manual style controls</h3>
+              <p>Control Mermaid theme mode, color palette, and typography.</p>
+            </div>
+          </div>
+
+          <div class="controls-grid">
+            <label class="field">
+              <span>Theme</span>
+              <select id="theme-select">
+                <option value="base">Base</option>
+                <option value="default">Default</option>
+                <option value="neutral">Neutral</option>
+                <option value="dark">Dark</option>
+                <option value="forest">Forest</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Primary color</span>
+              <input id="primary-color" type="color" value="#2563eb" />
+            </label>
+
+            <label class="field">
+              <span>Background</span>
+              <input id="background-color" type="color" value="#0b1120" />
+            </label>
+
+            <label class="field">
+              <span>Font size</span>
+              <input id="font-size" type="range" min="12" max="24" value="16" />
+            </label>
+          </div>
+        </section>
+      </aside>
 
       <footer class="site-footer">
         <p>
