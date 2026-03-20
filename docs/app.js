@@ -99,7 +99,7 @@ const themePresets = [
     },
   },
   {
-    id: "neutral",
+    id: "minimal",
     title: "Minimal",
     description: "Low-noise styling that reads cleanly in docs and exports.",
     settings: {
@@ -107,6 +107,94 @@ const themePresets = [
       primaryColor: "#64748b",
       backgroundColor: "#111827",
       fontSize: 15,
+    },
+  },
+  {
+    id: "sunset",
+    title: "Sunset",
+    description: "Warm oranges and reds with strong readability.",
+    settings: {
+      theme: "base",
+      primaryColor: "#f97316",
+      backgroundColor: "#1c0f08",
+      fontSize: 16,
+    },
+  },
+  {
+    id: "rose",
+    title: "Rose",
+    description: "Soft pink accents that still keep text high-contrast.",
+    settings: {
+      theme: "base",
+      primaryColor: "#ec4899",
+      backgroundColor: "#180915",
+      fontSize: 16,
+    },
+  },
+  {
+    id: "ocean",
+    title: "Ocean",
+    description: "Cool cyan styling for system maps and service flows.",
+    settings: {
+      theme: "base",
+      primaryColor: "#06b6d4",
+      backgroundColor: "#06161d",
+      fontSize: 16,
+    },
+  },
+  {
+    id: "amber",
+    title: "Amber",
+    description: "Golden tones that stay crisp in PNG and JPEG exports.",
+    settings: {
+      theme: "base",
+      primaryColor: "#f59e0b",
+      backgroundColor: "#171006",
+      fontSize: 16,
+    },
+  },
+  {
+    id: "violet",
+    title: "Violet",
+    description: "Rich purple contrast for polished presentation diagrams.",
+    settings: {
+      theme: "dark",
+      primaryColor: "#7c3aed",
+      backgroundColor: "#080510",
+      fontSize: 17,
+    },
+  },
+  {
+    id: "mint",
+    title: "Mint",
+    description: "Fresh green-blue palette with a softer visual feel.",
+    settings: {
+      theme: "base",
+      primaryColor: "#14b8a6",
+      backgroundColor: "#071714",
+      fontSize: 16,
+    },
+  },
+  {
+    id: "slate",
+    title: "Slate",
+    description: "Neutral graphite styling for docs-first diagrams.",
+    settings: {
+      theme: "neutral",
+      primaryColor: "#94a3b8",
+      backgroundColor: "#0f172a",
+      fontSize: 15,
+    },
+  },
+  {
+    id: "aurora",
+    title: "Aurora",
+    description: "Teal-to-lime energy while keeping labels readable.",
+    settings: {
+      theme: "base",
+      primaryColor: "#22c55e",
+      backgroundColor: "#07130d",
+      fontSize: 16,
     },
   },
 ];
@@ -317,19 +405,43 @@ function renderPresetCards() {
   );
 }
 
+function isThemePresetActive(preset) {
+  return (
+    state.settings.theme === preset.settings.theme &&
+    state.settings.primaryColor.toLowerCase() === preset.settings.primaryColor.toLowerCase() &&
+    state.settings.backgroundColor.toLowerCase() ===
+      preset.settings.backgroundColor.toLowerCase() &&
+    Number(state.settings.fontSize) === Number(preset.settings.fontSize)
+  );
+}
+
 function renderThemePresetCards() {
   elements.themePresetGrid.replaceChildren(
     ...themePresets.map((preset) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "theme-preset-button";
-      button.innerHTML = `<strong>${preset.title}</strong><span>${preset.description}</span>`;
+      button.className = `theme-preset-button${isThemePresetActive(preset) ? " active" : ""}`;
+      const accent = preset.settings.primaryColor;
+      const background = preset.settings.backgroundColor;
+      const accentSoft = adjustColor(accent, 36);
+      const accentDeep = adjustColor(accent, -44);
+      button.innerHTML = `
+        <div class="theme-preview-row" aria-hidden="true">
+          <span class="theme-swatch large" style="background:${background}; border-color:${accentDeep};"></span>
+          <span class="theme-swatch" style="background:${accent};"></span>
+          <span class="theme-swatch" style="background:${accentSoft};"></span>
+          <span class="theme-swatch" style="background:${accentDeep};"></span>
+        </div>
+        <strong>${preset.title}</strong>
+        <span>${preset.description}</span>
+      `;
       button.addEventListener("click", () => {
         state.settings = {
           ...state.settings,
           ...preset.settings,
         };
         updateThemeControls();
+        renderThemePresetCards();
         saveDraft();
         scheduleRender();
         setStatus(`Applied the ${preset.title} theme preset.`, "success");
@@ -741,12 +853,14 @@ function wireEvents() {
 
   elements.themeSelect.addEventListener("change", () => {
     state.settings.theme = elements.themeSelect.value;
+    renderThemePresetCards();
     saveDraft();
     scheduleRender();
   });
 
   elements.primaryColor.addEventListener("input", () => {
     state.settings.primaryColor = elements.primaryColor.value;
+    renderThemePresetCards();
     saveDraft();
     scheduleRender();
   });
@@ -754,12 +868,14 @@ function wireEvents() {
   elements.backgroundColor.addEventListener("input", () => {
     state.settings.backgroundColor = elements.backgroundColor.value;
     updateThemeControls();
+    renderThemePresetCards();
     saveDraft();
     scheduleRender();
   });
 
   elements.fontSize.addEventListener("input", () => {
     state.settings.fontSize = Number(elements.fontSize.value);
+    renderThemePresetCards();
     saveDraft();
     scheduleRender();
   });

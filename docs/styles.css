@@ -519,6 +519,38 @@ input[type="color"] {
   padding: 14px;
   text-align: left;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.theme-preset-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(96, 165, 250, 0.32);
+}
+
+.theme-preset-button.active {
+  border-color: rgba(96, 165, 250, 0.75);
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.28);
+}
+
+.theme-preview-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.theme-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.theme-swatch.large {
+  width: 52px;
+  border-radius: 999px;
 }
 
 .theme-preset-button strong {
