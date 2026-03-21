@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function Header({
   onOpenSettings,
+  onOpenHelp,
   onResetDemo,
   onCopySource,
 }) {
@@ -45,6 +46,13 @@ export default function Header({
         </button>
 
         <div className={`hero-action-buttons${menuOpen ? " menu-open" : ""}`}>
+          <button
+            className="button secondary compact-button"
+            type="button"
+            onClick={() => { onOpenHelp(); setMenuOpen(false); }}
+          >
+            ? Help
+          </button>
           <button
             className="button secondary compact-button"
             type="button"
